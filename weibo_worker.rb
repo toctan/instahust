@@ -26,8 +26,8 @@ class WeiboWorker
     weibo_status = "##{ENV['TAG']}# #{text} By #{author}. #{url}"
 
     client = WeiboOAuth2::Client.new
-    client.get_token_from_hash({ access_token: ENV['WEIBO_ACCESS_TOKEN'] })
-    client.statuses.upload_url_text({ status: weibo_status, url: image_url })
+    client.get_token_from_hash(access_token: ENV['WEIBO_ACCESS_TOKEN'])
+    client.statuses.upload_url_text(status: weibo_status, url: image_url)
   end
 
   def retries_exhausted(media_id)
@@ -39,6 +39,7 @@ class WeiboWorker
       user_name: ENV['GMAIL_USERNAME'],
       password: ENV['GMAIL_PASSWORD']
     }
+
     Pony.mail to: ENV['EXCEPTION_RECIPIENT'],
               subject: 'Instahust sync failed',
               body: media_id,
