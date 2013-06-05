@@ -18,6 +18,9 @@ GEM
     json (1.8.0)
     jwt (0.1.8)
       multi_json (>= 1.5)
+    mail (2.5.4)
+      mime-types (~> 1.16)
+      treetop (~> 1.4.8)
     mime-types (1.23)
     multi_json (1.7.5)
     multi_xml (0.5.3)
@@ -29,6 +32,9 @@ GEM
       multi_json (~> 1.0)
       multi_xml (~> 0.5)
       rack (~> 1.2)
+    polyglot (0.3.3)
+    pony (1.4.1)
+      mail (> 2.0)
     rack (1.5.2)
     rack-protection (1.5.0)
       rack
@@ -53,6 +59,9 @@ GEM
     temple (0.6.5)
     tilt (1.4.1)
     timers (1.1.0)
+    treetop (1.4.12)
+      polyglot
+      polyglot (>= 0.3.1)
     weibo_2 (0.1.4)
       hashie (~> 2.0.4)
       multi_json (~> 1.7.2)
@@ -64,6 +73,7 @@ PLATFORMS
 
 DEPENDENCIES
   instagram
+  pony
   sidekiq
   sinatra
   slim

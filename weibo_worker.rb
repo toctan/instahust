@@ -1,10 +1,11 @@
 require 'sidekiq'
 require 'weibo_2'
 require 'instagram'
+require 'pony'
 
 class WeiboWorker
   include Sidekiq::Worker
-  sidekiq_options :retry => 5
+  sidekiq_options :retry => 3
 
   def initialize
     Instagram.configure do |config|
@@ -27,5 +28,21 @@ class WeiboWorker
     client = WeiboOAuth2::Client.new
     client.get_token_from_hash({ access_token: ENV['WEIBO_ACCESS_TOKEN'] })
     client.statuses.upload_url_text({ status: weibo_status, url: image_url })
+  end
+
+  def retries_exhausted(media_id)
+    smtp_settings = {
+      address: "smtp.gmail.com",
+      port: 587,
+      authentication: "plain",
+      enable_starttls_auto: true,
+      user_name: ENV['GMAIL_USERNAME'],
+      password: ENV['GMAIL_PASSWORD']
+    }
+    Pony.mail to: ENV['EXCEPTION_RECIPIENT'],
+              subject: 'Instahust sync failed',
+              body: media_id,
+              via: :smtp,
+              via_options: smtp_settings
   end
 end
