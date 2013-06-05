@@ -20,7 +20,8 @@ post '/callback' do
   Instagram.process_subscription(request.body) do |handler|
     puts 'Incoming photo ...'
     handler.on_tag_changed do |tag_id, data|
-      WeiboWorker.perform_async(tag_id)
+      media_id = Instagram.tag_recent_media(tag_id, :count => 1)[0].id
+      WeiboWorker.perform_async(media_id)
     end
   end
 end

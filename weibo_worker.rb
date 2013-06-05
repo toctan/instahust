@@ -4,6 +4,7 @@ require 'instagram'
 
 class WeiboWorker
   include Sidekiq::Worker
+  sidekiq_options :retry => 5
 
   def initialize
     Instagram.configure do |config|
@@ -15,15 +16,16 @@ class WeiboWorker
     WeiboOAuth2::Config.api_secret = ENV['WEIBO_SECRET']
   end
 
-  def perform(tag_id)
-    medium = Instagram.tag_recent_media(tag_id, :count => 1)
-    image_url = medium[0].images.standard_resolution.url
-    text = medium[0].caption.text
-    author = medium[0].user.username
-    url = medium[0].link
-    weibo_status = "##{tag_id}# #{text} (by #{author}) #{url}"
+  def perform(media_id)
+    media = Instagram.media_item(media_id)
+    image_url = media.images.standard_resolution.url
+    text = media.caption.text.gsub(/[@#]\S+\s?/, '').strip
+    author = media.user.username
+    url = media.link
+    weibo_status = "##{ENV['TAG']}# #{text} By #{author}. #{url}"
 
-    client = WeiboOAuth2::Client.new.access_token = ENV['WEIBO_ACCESS_TOKEN']
+    client = WeiboOAuth2::Client.new
+    client.get_token_from_hash({ access_token: ENV['WEIBO_ACCESS_TOKEN'] })
     client.statuses.upload_url_text({ status: weibo_status, url: image_url })
   end
 end

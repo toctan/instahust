@@ -47,6 +47,10 @@ GEM
       rack (~> 1.5, >= 1.5.2)
       rack-protection (~> 1.4)
       tilt (~> 1.3, >= 1.3.4)
+    slim (2.0.0)
+      temple (~> 0.6.5)
+      tilt (~> 1.3, >= 1.3.3)
+    temple (0.6.5)
     tilt (1.4.1)
     timers (1.1.0)
     weibo_2 (0.1.4)
@@ -62,4 +66,5 @@ DEPENDENCIES
   instagram
   sidekiq
   sinatra
+  slim
   weibo_2
