@@ -3,7 +3,7 @@
 Instahust is a simple tool which syncs Instagram photos tagged with
 instahust to Weibo.  The original instahust was implemented by
 [pyrocat101](https://github.com/pyrocat101). This is the ruby
-implementation with some enhacements, including job queue and
+implementation with some enhancements, including job queue and
 exception notification via email.
 
 ![instahust](http://distilleryimage0.s3.amazonaws.com/ceca1cacc35f11e2b56022000a9f1354_7.jpg)
