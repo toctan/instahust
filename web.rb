@@ -13,15 +13,17 @@ get '/' do
 end
 
 get '/callback' do
-  request["hub.challenge"]
+  request["hub.challenge"] if request["hub.verify_token"] == ENV['HUB_TOKEN']
 end
 
 post '/callback' do
   Instagram.process_subscription(request.body) do |handler|
     puts 'Incoming photo ...'
-    handler.on_tag_changed do |tag_id, data|
-      media_id = Instagram.tag_recent_media(tag_id, :count => 1)[0].id
-      WeiboWorker.perform_async(media_id)
+    handler.on_tag_changed do |tag_id, _|
+      if tag_id == ENV['TAG']
+        media_id = Instagram.tag_recent_media(tag_id, :count => 1)[0].id
+        WeiboWorker.perform_async(media_id)
+      end
     end
   end
 end

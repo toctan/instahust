@@ -7,23 +7,27 @@ task :configure do
   end
 end
 
+desc "List all subscriptions"
 task :subs => :configure do
   Instagram.subscriptions.each do |sub|
     p sub
   end
 end
 
+desc "Create a Instagram tag subscription"
 task :create_sub => :configure do
   Instagram.create_subscription("tag", "http://#{ENV['DOMAIN']}/callback",
-                                object_id: ENV['TAG'])
+                                object_id: ENV['TAG'], verify_token: ENV['HUB_TOKEN'])
   puts "Subscription created: #{ENV['TAG']}"
 end
 
+desc "Delete a Instagram tag subscription"
 task :delete_sub => :configure do
   Instagram.delete_subscription(object: "tag", object_id: ENV['TAG'])
   puts "Subscription deleted: #{ENV['TAG']}"
 end
 
+desc "Resubscribe to the tag"
 task :resub => [:delete_sub, :create_sub] do
   puts 'Subscription recreated.'
 end
