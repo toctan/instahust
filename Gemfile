@@ -8,3 +8,9 @@ gem 'slim'
 gem 'pony'
 gem 'rake'
 gem 'foreman'
+
+group :development do
+  gem 'pry'
+  gem 'pry-doc'
+  gem 'awesome_print'
+end
