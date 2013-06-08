@@ -2,6 +2,7 @@ require 'sidekiq'
 require 'weibo_2'
 require 'instagram'
 require 'pony'
+require 'open-uri'
 
 class WeiboWorker
   include Sidekiq::Worker
@@ -19,7 +20,7 @@ class WeiboWorker
 
   def perform(media_id)
     media = Instagram.media_item(media_id)
-    image_url = media.images.standard_resolution.url
+    image = open(media.images.standard_resolution.url)
     text = media.caption.text.gsub(/[@#]\S+\s?/, '').strip
     author = media.user.username
     url = media.link
@@ -27,7 +28,7 @@ class WeiboWorker
 
     client = WeiboOAuth2::Client.new
     client.get_token_from_hash(access_token: ENV['WEIBO_ACCESS_TOKEN'])
-    client.statuses.upload_url_text(status: weibo_status, url: image_url)
+    client.statuses.upload(weibo_status, image)
   end
 
   def retries_exhausted(media_id)
