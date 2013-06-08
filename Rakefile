@@ -1,5 +1,7 @@
 require 'instagram'
 
+require File.dirname(__FILE__) + "/weibo_worker.rb"
+
 task :configure do
   Instagram.configure do |config|
     config.client_id = ENV['CLIENT_ID']
@@ -30,4 +32,9 @@ end
 desc "Resubscribe to the tag"
 task :resub => [:delete_sub, :create_sub] do
   puts 'Subscription recreated.'
+end
+
+desc "Resync the photo if the sync fails"
+task :resync do
+  WeiboWorker.perform_async ENV['MEDIA_ID']
 end

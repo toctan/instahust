@@ -23,7 +23,7 @@ class WeiboWorker
     text = media.caption.text.gsub(/[@#]\S+\s?/, '').strip
     author = media.user.username
     url = media.link
-    weibo_status = "##{ENV['TAG']}# #{text} By #{author}. #{url}"
+    weibo_status = "#{text} by #{author} ##{ENV['TAG']}# #{url}"
 
     client = WeiboOAuth2::Client.new
     client.get_token_from_hash(access_token: ENV['WEIBO_ACCESS_TOKEN'])
