@@ -19,12 +19,13 @@ class WeiboWorker
     media = Instagram.media_item(media_id)
     image = open(media.images.standard_resolution.url)
     text = media.caption.text.gsub(/[@#]\S+\s?/, '').strip
+    text = text[0..90] + '...' if text.length > 95
     author = media.user.username
     url = media.link
     weibo_status = "#{text} by #{author} ##{ENV['TAG']}# #{url}"
 
     RestClient.post 'https://upload.api.weibo.com/2/statuses/upload.json',
-    access_token: ENV['WEIBO_ACCESS_TOKEN'], pic: image, status: weibo_status, visible: 2
+    access_token: ENV['WEIBO_ACCESS_TOKEN'], pic: image, status: weibo_status
   end
 
   def retries_exhausted(media_id)
