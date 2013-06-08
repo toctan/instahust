@@ -18,14 +18,19 @@ get '/callback' do
 end
 
 post '/callback' do
-  Instagram.process_subscription(request.body) do |handler|
-    puts 'Incoming photo ...'
-    handler.on_tag_changed do |tag_id, _|
-      if tag_id == ENV['TAG']
-        media_id = Instagram.tag_recent_media(tag_id, :count => 1)[0].id
-        WeiboWorker.perform_async(media_id)
+  signature = env["HTTP_X_HUB_SIGNATURE"]
+  halt 403 if signature.nil?
+  begin
+    Instagram.process_subscription(request.body.read, signature: signature)  do |handler|
+      handler.on_tag_changed do |tag_id, _|
+        if tag_id == ENV['TAG']
+          media_id = Instagram.tag_recent_media(tag_id, :count => 1)[0].id
+          WeiboWorker.perform_async(media_id)
+        end
       end
     end
+  rescue Instagram::InvalidSignature
+    halt 403
   end
   "Gocha!"
 end
