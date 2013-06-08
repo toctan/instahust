@@ -1,8 +1,8 @@
 require 'sidekiq'
-require 'weibo_2'
 require 'instagram'
 require 'pony'
 require 'open-uri'
+require 'rest_client'
 
 class WeiboWorker
   include Sidekiq::Worker
@@ -13,9 +13,6 @@ class WeiboWorker
       config.client_id = ENV['CLIENT_ID']
       config.client_secret = ENV['CLIENT_SECRET']
     end
-
-    WeiboOAuth2::Config.api_key = ENV['WEIBO_KEY']
-    WeiboOAuth2::Config.api_secret = ENV['WEIBO_SECRET']
   end
 
   def perform(media_id)
@@ -26,9 +23,8 @@ class WeiboWorker
     url = media.link
     weibo_status = "#{text} by #{author} ##{ENV['TAG']}# #{url}"
 
-    client = WeiboOAuth2::Client.new
-    client.get_token_from_hash(access_token: ENV['WEIBO_ACCESS_TOKEN'])
-    client.statuses.upload(weibo_status, image)
+    RestClient.post 'https://upload.api.weibo.com/2/statuses/upload.json',
+    access_token: ENV['WEIBO_ACCESS_TOKEN'], pic: image, status: weibo_status, visible: 2
   end
 
   def retries_exhausted(media_id)

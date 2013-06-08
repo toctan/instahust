@@ -26,4 +26,5 @@ post '/callback' do
       end
     end
   end
+  "Gocha!"
 end
