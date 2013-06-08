@@ -8,6 +8,7 @@ gem 'slim'
 gem 'pony'
 gem 'rake'
 gem 'foreman'
+gem 'sentry-raven'
 
 group :development do
   gem 'pry'

@@ -1,5 +1,6 @@
 require "sinatra"
 require "instagram"
+require "raven"
 
 require File.dirname(__FILE__) + "/weibo_worker.rb"
 
