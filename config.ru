@@ -2,6 +2,10 @@ require './web'
 require 'raven'
 require 'sidekiq/web'
 
+Raven.configure do |config|
+  config.excluded_exceptions = ['Sinatra::NotFound']
+end
+
 use Raven::Rack
 
 Sidekiq::Web.use Rack::Auth::Basic do |username, password|
