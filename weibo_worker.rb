@@ -19,14 +19,7 @@ class WeiboWorker
   def perform(media_id)
     media = Instagram.media_item(media_id)
     image = open(media.images.standard_resolution.url)
-    text = media.caption.text.gsub(/[@#]\S+\s?/, '').strip
-    text = text[0..90] + '...' if text.length > 95
-    author = media.user.username
-    url = media.link
-    weibo_status = "#{text} by #{author} ##{ENV['TAG']}# #{url}"
-
-    RestClient.post 'https://upload.api.weibo.com/2/statuses/upload.json',
-    access_token: ENV['WEIBO_ACCESS_TOKEN'], pic: image, status: weibo_status
+    post_to_weibo(image, build_weibo_status(media))
   end
 
   def retries_exhausted(media_id)
@@ -44,5 +37,21 @@ class WeiboWorker
               body: media_id,
               via: :smtp,
               via_options: smtp_settings
+  end
+
+  private
+  def build_weibo_status(media)
+    "#{format_text(media.caption.text)} by #{media.user.username} "\
+    "##{ENV['TAG']}# #{media.link}"
+  end
+
+  def format_text(text)
+    text = text.gsub(/[@#]\S+\s?/, '').strip
+    text.length > 95 ? "#{text[0..90]} ..." : text
+  end
+
+  def post_to_weibo(image, status)
+    RestClient.post 'https://upload.api.weibo.com/2/statuses/upload.json',
+    access_token: ENV['WEIBO_ACCESS_TOKEN'], pic: image, status: status
   end
 end
