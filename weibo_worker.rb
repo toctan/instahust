@@ -41,12 +41,13 @@ class WeiboWorker
 
   private
   def build_weibo_status(media)
-    "#{format_text(media.caption.text)} by #{media.user.username} "\
+    "#{format_media_text(media)} by #{media.user.username} "\
     "##{ENV['TAG']}# #{media.link}"
   end
 
-  def format_text(text)
-    text = text.gsub(/[@#]\S+\s?/, '').strip
+  def format_media_text(media)
+    return if media.caption.nil?
+    text = media.caption.text.gsub(/[@#]\S+\s?/, '').strip
     text.length > 95 ? "#{text[0..90]} ..." : text
   end
 
