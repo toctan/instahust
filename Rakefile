@@ -36,5 +36,6 @@ end
 
 desc "Resync the photo if the sync fails"
 task :resync do
-  WeiboWorker.perform_async ENV['MEDIA_ID']
+  mid = ENV['LINK'] ? Instagram.oembed(ENV['LINK']).media_id : ENV['MEDIA_ID']
+  WeiboWorker.perform_async mid unless mid.nil?
 end
