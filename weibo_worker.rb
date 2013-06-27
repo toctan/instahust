@@ -7,7 +7,7 @@ require 'raven'
 
 class WeiboWorker
   include Sidekiq::Worker
-  sidekiq_options :retry => 3
+  sidekiq_options :retry => 10
 
   def initialize
     Instagram.configure do |config|
