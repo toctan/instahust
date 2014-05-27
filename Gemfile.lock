@@ -6,6 +6,7 @@ GEM
       timers (>= 1.0.0)
     coderay (1.0.9)
     connection_pool (1.0.0)
+    daemon_controller (1.2.0)
     dotenv (0.7.0)
     faraday (0.8.7)
       multipart-post (~> 1.1)
@@ -28,6 +29,10 @@ GEM
     mime-types (1.23)
     multi_json (1.7.5)
     multipart-post (1.2.0)
+    passenger (4.0.42)
+      daemon_controller (>= 1.2.0)
+      rack
+      rake (>= 0.8.1)
     polyglot (0.3.3)
     pony (1.4.1)
       mail (> 2.0)
@@ -83,6 +88,7 @@ DEPENDENCIES
   awesome_print
   foreman
   instagram
+  passenger
   pony
   pry
   pry-doc

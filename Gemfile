@@ -15,3 +15,7 @@ group :development do
   gem 'pry-doc'
   gem 'awesome_print'
 end
+
+group :production do
+  gem 'passenger'
+end
