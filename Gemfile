@@ -1,17 +1,16 @@
 source 'http://rubygems.org'
 
-gem 'sinatra'
-gem 'sidekiq'
-gem 'rest-client'
-gem 'instagram'
-gem 'slim'
-gem 'pony'
 gem 'rake'
-gem 'foreman'
+gem 'redis'
+gem 'sinatra'
+gem 'instagram'
+gem 'iron_worker_ng'
+
+gem 'rest-client'
 
 group :development do
   gem 'pry'
-  gem 'pry-doc'
+  gem 'foreman'
   gem 'awesome_print'
 end
 

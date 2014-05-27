@@ -1,0 +1,8 @@
+runtime 'ruby'
+exec 'run.rb'
+file 'config.yml'
+file 'weibo.rb'
+
+gem 'redis'
+gem 'instagram'
+gem 'rest-client'
