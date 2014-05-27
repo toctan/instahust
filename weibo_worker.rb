@@ -3,7 +3,6 @@ require 'instagram'
 require 'pony'
 require 'open-uri'
 require 'rest_client'
-require 'raven'
 
 class WeiboWorker
   include Sidekiq::Worker

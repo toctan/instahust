@@ -52,11 +52,6 @@ GEM
       redis (~> 3.0.0)
     rest-client (1.6.7)
       mime-types (>= 1.16)
-    sentry-raven (0.4.8)
-      faraday (>= 0.7.6)
-      hashie (>= 1.1.0)
-      multi_json (~> 1.0)
-      uuidtools
     sidekiq (2.12.1)
       celluloid (>= 0.14.1)
       connection_pool (>= 1.0.0)
@@ -78,7 +73,6 @@ GEM
     treetop (1.4.12)
       polyglot
       polyglot (>= 0.3.1)
-    uuidtools (2.1.4)
     yard (0.8.6.1)
 
 PLATFORMS
@@ -94,7 +88,6 @@ DEPENDENCIES
   pry-doc
   rake
   rest-client
-  sentry-raven
   sidekiq
   sinatra
   slim
